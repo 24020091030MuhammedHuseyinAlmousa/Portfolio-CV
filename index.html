@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-TTWPHWFHLC"></script>
+	<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	
+	gtag('config', 'G-TTWPHWFHLC');
+	</script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -16,8 +26,8 @@
     <title>Muhammed Hüseyin Almousa - CV</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
@@ -31,14 +41,14 @@
 
         <button class="hamburger" id="hamburger">&#9776;</button>
 
-			<ul id="navMenu">
-				<li><a href="#about">Hakkımda</a></li>
-				<li><a href="#skills">Yetenekler</a></li>
-				<li><a href="#projects">Projeler</a></li>
-				<li><a href="#certificates">Sertifikalar</a></li>
-				<li><a href="#contact">İletişim</a></li>
-				<div id="indicator"></div>
-			</ul>
+		<ul id="navMenu">
+			<li><a href="#about">Hakkımda</a></li>
+			<li><a href="#skills">Yetenekler</a></li>
+			<li><a href="#projects">Projeler</a></li>
+			<li><a href="#certificates">Sertifikalar</a></li>
+			<li><a href="#contact">İletişim</a></li>
+			<div id="indicator"></div>
+		</ul>
     </nav>
 
     <section id="hero" class="hero">
@@ -108,7 +118,6 @@
 
     <section id="projects" class="hidden">
 		<h2 class="title">Projeler</h2>
-	
 		<div class="projects" id="github-projects">
 			<!-- GitHub projeleri buraya otomatik gelecek -->
 		</div>
@@ -116,20 +125,15 @@
 	
 	<section id="certificates" class="hidden">
 		<h2 class="title">Sertifikalar</h2>
-	
 		<div class="carousel-container">
-	
 			<button class="carousel-btn prev">&#10094;</button>
-	
 			<div class="carousel" id="carousel">
 				<img src="images/C_Programlama_Dili_Sertifika.jpg" alt="Sertifika 1">
 				<img src="images/C_Programlama_Dili_Sertifika.jpg" alt="Sertifika 2">
 				<img src="images/C_Programlama_Dili_Sertifika.jpg" alt="Sertifika 3">
 				<img src="images/C_Programlama_Dili_Sertifika.jpg" alt="Sertifika 4">
 			</div>
-	
 			<button class="carousel-btn next">&#10095;</button>
-	
 		</div>
 	</section>
 	
@@ -143,14 +147,13 @@
         <p>
             Telefon: <a href="tel:+905367888269">+90 536 788 82 69</a> <br><br>
             E-posta: <a href="mailto:24020091030@ogr.istiklal.edu.tr">24020091030@ogr.istiklal.edu.tr</a> <br><br>
-            <a href="https://github.com/24020091030MuhammedHuseyinAlmousa" target="_blank">GitHub Profilim</a>
+            <!-- GÜVENLİK: rel="noopener noreferrer" → tabnapping önlemi -->
+            <a href="https://github.com/24020091030MuhammedHuseyinAlmousa" target="_blank" rel="noopener noreferrer">GitHub Profilim</a>
             <br><br>
-            <a href="https://www.linkedin.com/in/huseyin-almousa" target="_blank">LinkedIn Profilim</a>
+            <a href="https://www.linkedin.com/in/huseyin-almousa" target="_blank" rel="noopener noreferrer">LinkedIn Profilim</a>
         </p>
-
         <br>
         <button id="contactBtn">İletişime Geç</button>
-
     </section>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -166,7 +169,7 @@
             <label for="name">Adınız</label>
             <input type="text" id="name" name="name" required>
             
-            <label for="email">E=postanız</label>
+            <label for="email">E-postanız</label>
             <input type="email" id="email" name="email" required>
                 
             <label for="message">Mesajınız</label>

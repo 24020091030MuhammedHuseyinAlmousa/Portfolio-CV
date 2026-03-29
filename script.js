@@ -19,8 +19,6 @@ window.addEventListener("scroll", () => {
     let current = "";
     const scrollPos = window.scrollY;
 
-    // SİNYAL: Eğer sayfa tepesine 100px'den daha yakınsak, "current" boş kalsın.
-    // Bu, Hero kısmında olduğumuzun en net sinyalidir.
     if (scrollPos > 100) {
         sections.forEach(section => {
             const sectionTop = section.offsetTop - 350; 
@@ -32,11 +30,9 @@ window.addEventListener("scroll", () => {
         });
     }
 
-    // Navbar arka plan değişimi (bu aynı kalabilir)
     const nav = document.querySelector("nav");
     nav.style.background = scrollPos > 50 ? "rgba(0,0,0,0.9)" : "rgba(0,0,0,0.6)";
 
-    // Linkleri ve çizgiyi güncelle
     let activeFound = false;
     navLinks.forEach(link => {
         link.classList.remove("active");
@@ -50,7 +46,6 @@ window.addEventListener("scroll", () => {
         }
     });
 
-    // Eğer sinyal "tepedeyiz" diyorsa veya aktif bölüm yoksa çizgiyi yok et
     if (!activeFound || current === "") {
         moveIndicator(null);
     }
@@ -67,25 +62,21 @@ const observer = new IntersectionObserver(entries => {
 document.querySelectorAll(".hidden").forEach(el => observer.observe(el));
 
 // 4. İletişim Popup
-// popup ve diğer elementleri seçelim
 const popupForm = document.getElementById("popupForm");
 const contactBtn = document.getElementById("contactBtn");
 const closeBtn = document.getElementById("closeBtn");
 const bodyElement = document.body;
 
-
-// Formu Aç
 contactBtn.addEventListener("click", function() {
     popupForm.style.display = "flex";
-    bodyElement.style.overflow = "hidden"; // Kaydırmayı kapat
-    nav.style.pointerEvents = "none"; // Navbara tıklamayı kapat
+    bodyElement.style.overflow = "hidden";
+    nav.style.pointerEvents = "none";
 });
 
-// Formu Kapat
 closeBtn.addEventListener("click", function() {
     popupForm.style.display = "none";
-    bodyElement.style.overflow = "auto"; // Kaydırmayı aç
-    nav.style.pointerEvents = "auto"; // Navbara tıklamayı aç
+    bodyElement.style.overflow = "auto";
+    nav.style.pointerEvents = "auto";
 });
 
 // 5. EmailJS
@@ -104,8 +95,8 @@ document.getElementById("contactForm").addEventListener("submit", function(e) {
             alert("Mesajın başarıyla ulaştı.");
             this.reset();
             document.getElementById("popupForm").style.display = "none";
-            bodyElement.style.overflow = "auto"; // Kaydırmayı aç
-            nav.style.pointerEvents = "auto"; // Navbara tıklamayı aç
+            bodyElement.style.overflow = "auto";
+            nav.style.pointerEvents = "auto";
         })
         .catch((err) => {
             alert("Aksilik çıktı: " + JSON.stringify(err));
@@ -118,38 +109,29 @@ document.getElementById("contactForm").addEventListener("submit", function(e) {
 
 // CAROUSEL
 const carousel = document.getElementById("carousel");
-const slides = carousel.querySelectorAll("img"); // 4 resim bekliyoruz (1, 2, 3, ve 1'in kopyası)
+const slides = carousel.querySelectorAll("img");
 
 const prevBtn = document.querySelector(".prev");
 const nextBtn = document.querySelector(".next");
 
 let slideIndex = 0;
 let auto;
-let isTransitioning = false; // Spam tıklamaları önleyip animasyonun bozulmasını engellemek için
+let isTransitioning = false;
 
 function showSlide(index) {
-    // Animasyonu aktif et ve hedefe kaydır
     carousel.style.transition = "transform 0.8s ease";
     slideIndex = index;
     carousel.style.transform = `translateX(${-slideIndex * 100}%)`;
 }
 
 function nextSlide() {
-    if (isTransitioning) return; // Geçiş sürerken tıklamayı yoksay
+    if (isTransitioning) return;
 
-    // Eğer 4. resimde (1. resmin kopyası) isek ve SAĞA gitme emri aldıysak
     if (slideIndex === slides.length - 1) {
-        // 1. Animasyonu tamamen kapat
         carousel.style.transition = "none";
-        
-        // 2. Çaktırmadan gerçek 1. resme (index 0) atla
         slideIndex = 0;
         carousel.style.transform = `translateX(0%)`;
-        
-        // 3. Tarayıcıyı zorla yenile (Reflow). Bu satır atlamanın görünmez olmasını sağlar!
         carousel.offsetHeight; 
-        
-        // 4. Animasyonu geri aç ve 2. resme kaydır
         showSlide(1);
     } else {
         showSlide(slideIndex + 1);
@@ -157,83 +139,52 @@ function nextSlide() {
 }
 
 function prevSlide() {
-    if (isTransitioning) return; // Geçiş sürerken tıklamayı yoksay
+    if (isTransitioning) return;
 
-    // Eğer gerçek 1. resimde isek ve SOLA (geri) gitme emri aldıysak
     if (slideIndex === 0) {
-        // 1. Animasyonu tamamen kapat
         carousel.style.transition = "none";
-        
-        // 2. Çaktırmadan 4. resme (1'in kopyası olan index 3) atla
         slideIndex = slides.length - 1;
         carousel.style.transform = `translateX(${-slideIndex * 100}%)`;
-        
-        // 3. Tarayıcıyı zorla yenile
         carousel.offsetHeight; 
-        
-        // 4. Animasyonu geri aç ve 3. resme kaydır
         showSlide(slideIndex - 1);
     } else {
         showSlide(slideIndex - 1);
     }
 }
 
-// BUTON OLAYLARI
 nextBtn.addEventListener("click", nextSlide);
 prevBtn.addEventListener("click", prevSlide);
 
-// Animasyon sürerken butona art arda basılıp döngünün kırılmasını engelleme
-carousel.addEventListener('transitionstart', () => {
-    isTransitioning = true;
-});
-carousel.addEventListener('transitionend', () => {
-    isTransitioning = false;
-});
+carousel.addEventListener('transitionstart', () => { isTransitioning = true; });
+carousel.addEventListener('transitionend', () => { isTransitioning = false; });
 
-// OTOMATİK KAYDIRMA
-function startAuto() {
-    auto = setInterval(nextSlide, 3000);
-}
-
-function stopAuto() {
-    clearInterval(auto);
-}
+function startAuto() { auto = setInterval(nextSlide, 3000); }
+function stopAuto() { clearInterval(auto); }
 
 carousel.addEventListener("mouseenter", stopAuto);
 carousel.addEventListener("mouseleave", startAuto);
 
-// Başlangıçta carousel'i göster
 showSlide(0);
-
 startAuto();
 
-// MOBİL KAYDIRMA (SWIPE)
 let startX = 0;
 
 carousel.addEventListener("touchstart", (e) => {
     startX = e.touches[0].clientX;
-    stopAuto(); // Dokunulduğunda otomatik kaymayı durdur
+    stopAuto();
 });
 
 carousel.addEventListener("touchend", (e) => {
     let endX = e.changedTouches[0].clientX;
-
-    if (startX - endX > 50) {
-        nextSlide();
-    }
-
-    if (endX - startX > 50) {
-        prevSlide();
-    }
-    
-    startAuto(); // Bırakıldığında tekrar başlat
+    if (startX - endX > 50) nextSlide();
+    if (endX - startX > 50) prevSlide();
+    startAuto();
 });
 
 // LIGHTBOX
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightbox-img");
 
-// Klon resim tıklandığında da çalışması için tüm slide'lara event ekliyoruz
 slides.forEach(img => {
     img.addEventListener("click", () => {
         lightbox.style.display = "flex";
@@ -246,50 +197,70 @@ lightbox.addEventListener("click", () => {
 });
 
 // GITHUB PROJECTS
-
+// GÜVENLİK: XSS önlemi — repo adı ve açıklaması textContent ile ekleniyor,
+// innerHTML'e ham veri verilmiyor.
 const githubContainer = document.getElementById("github-projects");
 
-if(githubContainer){
-
-fetch("https://api.github.com/users/24020091030MuhammedHuseyinAlmousa/repos")
-.then(res => res.json())
-.then(repos => {
-
-repos
-.sort((a,b)=> new Date(b.created_at) - new Date(a.created_at))
-.slice(0,6)
-.forEach(repo => {
-
-const card = document.createElement("div");
-card.classList.add("card");
-
-card.innerHTML = `
-<img src="images/github.jpg" alt="project">
-
-<div class="card-content">
-<h3>${repo.name}</h3>
-<p>${repo.description ?? "Açıklama bulunmuyor."}</p>
-
-<br>
-
-<a href="${repo.html_url}" target="_blank">
-GitHub'da Gör
-</a>
-</div>
-`;
-
-githubContainer.appendChild(card);
-
-});
-
-})
-.catch(err => {
-githubContainer.innerHTML = "<p>Projeler yüklenemedi bağlantınızı kontrol ediniz veya sayfayı yenileyiniz.</p>";
-console.error(err);
-});
-
+// Güvenli metin sanitizasyonu
+function sanitizeText(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
 }
 
+if (githubContainer) {
+    fetch("https://api.github.com/users/24020091030MuhammedHuseyinAlmousa/repos")
+        .then(res => res.json())
+        .then(repos => {
+            repos
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                .slice(0, 6)
+                .forEach(repo => {
+                    const card = document.createElement("div");
+                    card.classList.add("card");
+
+                    // GÜVENLİK: href sadece gerçek GitHub URL'si ise kullanılıyor
+                    const safeUrl = (typeof repo.html_url === "string" && repo.html_url.startsWith("https://github.com/"))
+                        ? repo.html_url
+                        : "#";
+
+                    const img = document.createElement("img");
+                    img.src = "images/github.jpg";
+                    img.alt = "project";
+
+                    const content = document.createElement("div");
+                    content.classList.add("card-content");
+
+                    const title = document.createElement("h3");
+                    title.textContent = repo.name; // textContent → XSS yok
+
+                    const desc = document.createElement("p");
+                    desc.textContent = repo.description ?? "Açıklama bulunmuyor."; // textContent → XSS yok
+
+                    const br = document.createElement("br");
+
+                    const link = document.createElement("a");
+                    link.href = safeUrl;
+                    link.target = "_blank";
+                    link.rel = "noopener noreferrer"; // GÜVENLİK: tabnapping önlemi
+                    link.textContent = "GitHub'da Gör";
+
+                    content.appendChild(title);
+                    content.appendChild(desc);
+                    content.appendChild(br);
+                    content.appendChild(link);
+                    card.appendChild(img);
+                    card.appendChild(content);
+                    githubContainer.appendChild(card);
+                });
+        })
+        .catch(err => {
+            githubContainer.innerHTML = "<p>Projeler yüklenemedi bağlantınızı kontrol ediniz veya sayfayı yenileyiniz.</p>";
+            console.error(err);
+        });
+}
+
+// PROGRESS BARS
 const progressBars = document.querySelectorAll(".progress");
 const barObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
@@ -310,25 +281,22 @@ const barObserver = new IntersectionObserver(entries => {
 });
 progressBars.forEach(bar => barObserver.observe(bar));
 
-// --- YENİ HAMBURGER VE ÇİZGİ KONTROLÜ ---
+// HAMBURGER
 const navMenu = document.getElementById("navMenu");
 const hamburger = document.getElementById("hamburger");
 
-// Hamburger menüye tıklandığında
 hamburger.addEventListener("click", () => {
     navMenu.classList.toggle("open");
     
-    // Menü açıldığında mavi çizgiyi (indicator) gizle, kapandığında göster
     if (navMenu.classList.contains("open")) {
         indicator.style.opacity = "0";
-        indicator.style.display = "none"; // Garantiye almak için tamamen gizle
+        indicator.style.display = "none";
     } else {
         indicator.style.opacity = "1";
         indicator.style.display = "block";
     }
 });
 
-// Menüdeki bir linke tıklandığında menüyü kapat ve çizgiyi geri getir
 navLinks.forEach(link => {
     link.addEventListener("click", () => {
         navMenu.classList.remove("open");
